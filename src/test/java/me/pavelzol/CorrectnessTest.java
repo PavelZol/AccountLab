@@ -10,13 +10,15 @@ import java.util.stream.Stream;
 public class CorrectnessTest {
     public static final int CPU_MULTIPLIER = 4;
 
-    private static Stream<Arguments> provideAccountImplementations() {
+    private static Stream<Arguments> provideAccountImplementations() throws NoSuchFieldException, IllegalAccessException {
         return Stream.of(
             Arguments.of(new UnSynchronizedAccount(0.1)),
             Arguments.of(new SynchronizedAccount(0.1)),
             Arguments.of(new SynchronizedBigDecimalAccount(0.1)),
             Arguments.of(new DoubleAdderAccount(0.1)),
-            Arguments.of(new NonBlockingBigDecimalAccount(0.1))
+            Arguments.of(new NonBlockingBigDecimalAccount(0.1)),
+            Arguments.of(new VarHandleBigDecimalAccount(0.1))
+
         );
     }
 

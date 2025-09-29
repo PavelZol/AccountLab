@@ -22,7 +22,7 @@ public class NonBlockingBigDecimalAccount implements Account {
         do {
             curr = balance.get();
             next = curr.add(BigDecimal.valueOf(delta));
-        } while (balance.compareAndSet(curr, next));
+        } while (!balance.compareAndSet(curr, next));
     }
 
     @Override
