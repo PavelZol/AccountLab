@@ -4,7 +4,7 @@ import java.lang.invoke.*;
 import java.math.BigDecimal;
 
 public class VarHandleBigDecimalAccount implements Account {
-    private final BigDecimal balance;
+    private BigDecimal balance;
     private final VarHandle balanceHandle;
 
     public VarHandleBigDecimalAccount(double initBalance) throws NoSuchFieldException, IllegalAccessException {
