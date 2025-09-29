@@ -18,7 +18,6 @@ public class CorrectnessTest {
             Arguments.of(new DoubleAdderAccount(0.1)),
             Arguments.of(new NonBlockingBigDecimalAccount(0.1)),
             Arguments.of(new VarHandleBigDecimalAccount(0.1))
-
         );
     }
 
