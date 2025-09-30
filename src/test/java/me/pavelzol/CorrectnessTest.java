@@ -13,6 +13,8 @@ public class CorrectnessTest {
             Arguments.of(new UnSynchronizedAccount(0.1)),
             Arguments.of(new SynchronizedAccount(0.1)),
             Arguments.of(new SynchronizedBigDecimalAccount(0.1)),
+            Arguments.of(new ReentrantLockAccount(0.1)),
+            Arguments.of(new ReentrantFairLockAccount(0.1)),
             Arguments.of(new DoubleAdderAccount(0.1)),
             Arguments.of(new NonBlockingBigDecimalAccount(0.1)),
             Arguments.of(new VarHandleBigDecimalAccount(0.1))
@@ -29,8 +31,8 @@ public class CorrectnessTest {
                 executor.submit(() -> {
                     try {
                         countDownLatch.await();
-                        account.debit(0.1D);
-                        account.credit(0.01D);
+                        account.credit(0.1D);
+                        account.debit(0.01D);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

@@ -23,7 +23,7 @@ public class VarHandleBigDecimalAccount implements Account {
         BigDecimal next;
         do {
             curr = (BigDecimal) balanceHandle.getVolatile(this);
-            next = curr.add(BigDecimal.valueOf(delta));
+            next = curr.subtract(BigDecimal.valueOf(delta));
         } while (!balanceHandle.compareAndSet(this, curr, next));
     }
 
@@ -33,7 +33,7 @@ public class VarHandleBigDecimalAccount implements Account {
         BigDecimal next;
         do {
             curr = (BigDecimal) balanceHandle.getVolatile(this);
-            next = curr.subtract(BigDecimal.valueOf(delta));
+            next = curr.add(BigDecimal.valueOf(delta));
         } while (!balanceHandle.compareAndSet(this, curr, next));
     }
 }

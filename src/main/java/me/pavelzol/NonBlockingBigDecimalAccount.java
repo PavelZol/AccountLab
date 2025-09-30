@@ -21,7 +21,7 @@ public class NonBlockingBigDecimalAccount implements Account {
         BigDecimal next;
         do {
             curr = balance.get();
-            next = curr.add(BigDecimal.valueOf(delta));
+            next = curr.subtract(BigDecimal.valueOf(delta));
         } while (!balance.compareAndSet(curr, next));
     }
 
@@ -31,7 +31,7 @@ public class NonBlockingBigDecimalAccount implements Account {
         BigDecimal next;
         do {
             curr = balance.get();
-            next = curr.subtract(BigDecimal.valueOf(delta));
+            next = curr.add(BigDecimal.valueOf(delta));
         } while (!balance.compareAndSet(curr, next));
     }
 }

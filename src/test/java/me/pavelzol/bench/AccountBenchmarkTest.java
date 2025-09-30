@@ -33,22 +33,22 @@ public class AccountBenchmarkTest {
 
     @Benchmark
     public void synchronizedDebit(SharedState s) {
-        s.synchronizedBigDecimalAccount.debit(1.0);
+        s.synchronizedBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
     public void nonBlockingDebit(SharedState s) {
-        s.nonBlockingBigDecimalAccount.debit(1.0);
+        s.nonBlockingBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
     public void varHandleDebit(SharedState s) {
-        s.varHandleBigDecimalAccount.debit(1.0);
+        s.varHandleBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
     public void varHandleBackoffDebit(SharedState s) {
-        s.varHandleBackoffAccount.debit(1.0);
+        s.varHandleBackoffAccount.credit(1.0);
     }
 
     static final void main(String... args) throws Exception {
@@ -65,4 +65,3 @@ public class AccountBenchmarkTest {
         new Runner(opt).run();
     }
 }
-

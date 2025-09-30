@@ -26,7 +26,7 @@ public class VarHandleBackoffAccount implements Account {
         BigDecimal next;
         while (true) {
             curr = (BigDecimal) balanceHandle.getVolatile(this);
-            next = curr.add(BigDecimal.valueOf(delta));
+            next = curr.subtract(BigDecimal.valueOf(delta));
             if (balanceHandle.compareAndSet(this, curr, next)) {
                 return;
             } else {
@@ -46,7 +46,7 @@ public class VarHandleBackoffAccount implements Account {
         BigDecimal next;
         while (true) {
             curr = (BigDecimal) balanceHandle.getVolatile(this);
-            next = curr.subtract(BigDecimal.valueOf(delta));
+            next = curr.add(BigDecimal.valueOf(delta));
             if (balanceHandle.compareAndSet(this, curr, next)) {
                 return;
             } else {

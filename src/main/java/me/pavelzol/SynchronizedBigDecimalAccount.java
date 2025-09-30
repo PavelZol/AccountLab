@@ -18,14 +18,14 @@ public class SynchronizedBigDecimalAccount implements Account {
     @Override
     public void debit(double delta) {
         synchronized (lock) {
-            balance = balance.add(BigDecimal.valueOf(delta));
+            balance = balance.subtract(BigDecimal.valueOf(delta));
         }
     }
 
     @Override
     public void credit(double delta) {
         synchronized (lock) {
-            balance = balance.subtract(BigDecimal.valueOf(delta));
+            balance = balance.add(BigDecimal.valueOf(delta));
         }
     }
 }

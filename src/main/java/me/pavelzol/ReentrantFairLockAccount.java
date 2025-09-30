@@ -20,7 +20,7 @@ public class ReentrantFairLockAccount implements Account {
     public void debit(double delta) {
         lock.lock();
         try {
-            balance = balance.add(BigDecimal.valueOf(delta));
+            balance = balance.subtract(BigDecimal.valueOf(delta));
         } finally {
             lock.unlock();
         }
@@ -30,7 +30,7 @@ public class ReentrantFairLockAccount implements Account {
     public void credit(double delta) {
         lock.lock();
         try {
-            balance = balance.subtract(BigDecimal.valueOf(delta));
+            balance = balance.add(BigDecimal.valueOf(delta));
         } finally {
             lock.unlock();
         }

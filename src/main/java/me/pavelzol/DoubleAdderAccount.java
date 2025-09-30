@@ -18,11 +18,11 @@ public class DoubleAdderAccount implements Account {
 
     @Override
     public void debit(double delta) {
-        balance.add(delta);
+        balance.add(-delta);
     }
 
     @Override
     public void credit(double delta) {
-        balance.add(-delta);
+        balance.add(delta);
     }
 }

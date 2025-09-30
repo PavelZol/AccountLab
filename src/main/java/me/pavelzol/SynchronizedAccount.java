@@ -16,14 +16,14 @@ public class SynchronizedAccount implements Account {
     @Override
     public void debit(double delta) {
         synchronized (lock) {
-            balance += delta;
+            balance -= delta;
         }
     }
 
     @Override
     public void credit(double delta) {
         synchronized (lock) {
-            balance -= delta;
+            balance += delta;
         }
     }
 }
