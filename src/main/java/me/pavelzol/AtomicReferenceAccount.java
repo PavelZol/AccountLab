@@ -3,10 +3,10 @@ package me.pavelzol;
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.*;
 
-public class NonBlockingBigDecimalAccount implements Account {
+public class AtomicReferenceAccount implements Account {
     private final AtomicReference<BigDecimal> balance;
 
-    public NonBlockingBigDecimalAccount(double initBalance) {
+    public AtomicReferenceAccount(double initBalance) {
         this.balance = new AtomicReference<>(BigDecimal.valueOf(initBalance));
     }
 

@@ -1,7 +1,25 @@
 package me.pavelzol.bench;
 
-import me.pavelzol.*;
-import org.openjdk.jmh.annotations.*;
+import me.pavelzol.AtomicReferenceAccount;
+import me.pavelzol.AtomicReferenceBackoffAccount;
+import me.pavelzol.ReentrantFairLockAccount;
+import me.pavelzol.ReentrantLockAccount;
+import me.pavelzol.SynchronizedBigDecimalAccount;
+import me.pavelzol.VarHandleBackoffAccount;
+import me.pavelzol.VarHandleBigDecimalAccount;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Threads;
+import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -11,9 +29,9 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(value = 3)
-@Warmup(iterations = 5, time = 2, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 2, timeUnit = TimeUnit.SECONDS)
-@Threads(Threads.MAX)
+@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Threads(1)
 public class AccountBenchmarkTest {
 
     @State(Scope.Benchmark)
@@ -21,7 +39,8 @@ public class AccountBenchmarkTest {
         SynchronizedBigDecimalAccount synchronizedBigDecimalAccount;
         ReentrantLockAccount reentrantLockAccount;
         ReentrantFairLockAccount reentrantFairLockAccount;
-        NonBlockingBigDecimalAccount nonBlockingBigDecimalAccount;
+        AtomicReferenceAccount atomicReferenceAccount;
+        AtomicReferenceBackoffAccount atomicReferenceBackoffAccount;
         VarHandleBigDecimalAccount varHandleBigDecimalAccount;
         VarHandleBackoffAccount varHandleBackoffAccount;
 
@@ -30,7 +49,8 @@ public class AccountBenchmarkTest {
             synchronizedBigDecimalAccount = new SynchronizedBigDecimalAccount(0.0);
             reentrantLockAccount = new ReentrantLockAccount(0.0);
             reentrantFairLockAccount = new ReentrantFairLockAccount(0.0);
-            nonBlockingBigDecimalAccount = new NonBlockingBigDecimalAccount(0.0);
+            atomicReferenceAccount = new AtomicReferenceAccount(0.0);
+            atomicReferenceBackoffAccount = new AtomicReferenceBackoffAccount(0.0);
             varHandleBigDecimalAccount = new VarHandleBigDecimalAccount(0.0);
             varHandleBackoffAccount = new VarHandleBackoffAccount(0.0);
         }
@@ -52,8 +72,13 @@ public class AccountBenchmarkTest {
     }
 
     @Benchmark
-    public void nonBlockingCredit(SharedState s) {
-        s.nonBlockingBigDecimalAccount.credit(1.0);
+    public void atomicReferenceCredit(SharedState s) {
+        s.atomicReferenceAccount.credit(1.0);
+    }
+
+    @Benchmark
+    public void atomicReferenceBackoffCredit(SharedState s) {
+        s.atomicReferenceBackoffAccount.credit(1.0);
     }
 
     @Benchmark
@@ -66,13 +91,14 @@ public class AccountBenchmarkTest {
         s.varHandleBackoffAccount.credit(1.0);
     }
 
-    public static void main(String... args) throws Exception {
+    static void main() throws Exception {
         run(".*" + AccountBenchmarkTest.class.getSimpleName() + ".*");
     }
 
     private static void run(String includeRegex) throws Exception {
         Options opt = new OptionsBuilder()
             .include(includeRegex)
+            .addProfiler(GCProfiler.class)
             .shouldFailOnError(true)
             .build();
         new Runner(opt).run();

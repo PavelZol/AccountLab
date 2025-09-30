@@ -16,7 +16,8 @@ public class CorrectnessTest {
             Arguments.of(new ReentrantLockAccount(0.1)),
             Arguments.of(new ReentrantFairLockAccount(0.1)),
             Arguments.of(new DoubleAdderAccount(0.1)),
-            Arguments.of(new NonBlockingBigDecimalAccount(0.1)),
+            Arguments.of(new AtomicReferenceAccount(0.1)),
+            Arguments.of(new AtomicReferenceBackoffAccount(0.1)),
             Arguments.of(new VarHandleBigDecimalAccount(0.1))
         );
     }
