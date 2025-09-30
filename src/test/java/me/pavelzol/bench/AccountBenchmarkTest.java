@@ -9,22 +9,26 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.SECONDS)
-@Fork(value = 1)
-@Warmup(iterations = 3, time = 1_000, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 5, time = 1_000, timeUnit = TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Fork(value = 3)
+@Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
 public class AccountBenchmarkTest {
 
     @State(Scope.Benchmark)
     public static class SharedState {
         SynchronizedBigDecimalAccount synchronizedBigDecimalAccount;
+        ReentrantLockAccount reentrantLockAccount;
+        ReentrantFairLockAccount reentrantFairLockAccount;
         NonBlockingBigDecimalAccount nonBlockingBigDecimalAccount;
         VarHandleBigDecimalAccount varHandleBigDecimalAccount;
         VarHandleBackoffAccount varHandleBackoffAccount;
 
-        @Setup(Level.Trial)
+        @Setup(Level.Iteration)
         public void setup() throws NoSuchFieldException, IllegalAccessException {
             synchronizedBigDecimalAccount = new SynchronizedBigDecimalAccount(0.0);
+            reentrantLockAccount = new ReentrantLockAccount(0.0);
+            reentrantFairLockAccount = new ReentrantFairLockAccount(0.0);
             nonBlockingBigDecimalAccount = new NonBlockingBigDecimalAccount(0.0);
             varHandleBigDecimalAccount = new VarHandleBigDecimalAccount(0.0);
             varHandleBackoffAccount = new VarHandleBackoffAccount(0.0);
@@ -32,26 +36,36 @@ public class AccountBenchmarkTest {
     }
 
     @Benchmark
-    public void synchronizedDebit(SharedState s) {
+    public void synchronizedCredit(SharedState s) {
         s.synchronizedBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
-    public void nonBlockingDebit(SharedState s) {
+    public void reentrantCredit(SharedState s) {
+        s.reentrantLockAccount.credit(1.0);
+    }
+
+    @Benchmark
+    public void reentrantFairCredit(SharedState s) {
+        s.reentrantFairLockAccount.credit(1.0);
+    }
+
+    @Benchmark
+    public void nonBlockingCredit(SharedState s) {
         s.nonBlockingBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
-    public void varHandleDebit(SharedState s) {
+    public void varHandleCredit(SharedState s) {
         s.varHandleBigDecimalAccount.credit(1.0);
     }
 
     @Benchmark
-    public void varHandleBackoffDebit(SharedState s) {
+    public void varHandleBackoffCredit(SharedState s) {
         s.varHandleBackoffAccount.credit(1.0);
     }
 
-    static final void main(String... args) throws Exception {
+    public static void main(String... args) throws Exception {
         run(".*" + AccountBenchmarkTest.class.getSimpleName() + ".*");
     }
 
