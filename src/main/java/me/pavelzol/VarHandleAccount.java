@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 @ThreadSafe
 public class VarHandleAccount implements Account {
-    @SuppressWarnings("FieldMayBeFinal")
     private BigDecimal balance;
     private final VarHandle balanceHandle;
 
