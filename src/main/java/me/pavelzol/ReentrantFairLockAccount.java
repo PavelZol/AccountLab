@@ -1,13 +1,13 @@
 package me.pavelzol;
 
 import java.math.BigDecimal;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockAccount implements Account {
-    private final ReentrantLock lock = new ReentrantLock();
+public class ReentrantFairLockAccount implements Account {
+    private final ReentrantLock lock = new ReentrantLock(true);
     private volatile BigDecimal balance;
 
-    public ReentrantLockAccount(double initBalance) {
+    public ReentrantFairLockAccount(double initBalance) {
         this.balance = BigDecimal.valueOf(initBalance);
     }
 
