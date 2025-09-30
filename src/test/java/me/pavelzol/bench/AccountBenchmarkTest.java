@@ -11,8 +11,9 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(value = 3)
-@Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 2, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 2, timeUnit = TimeUnit.SECONDS)
+@Threads(Threads.MAX)
 public class AccountBenchmarkTest {
 
     @State(Scope.Benchmark)
@@ -70,10 +71,8 @@ public class AccountBenchmarkTest {
     }
 
     private static void run(String includeRegex) throws Exception {
-        int threads = Runtime.getRuntime().availableProcessors();
         Options opt = new OptionsBuilder()
             .include(includeRegex)
-            .threads(threads)
             .shouldFailOnError(true)
             .build();
         new Runner(opt).run();
