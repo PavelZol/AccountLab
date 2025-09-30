@@ -1,5 +1,8 @@
 package me.pavelzol;
 
+import net.jcip.annotations.NotThreadSafe;
+
+@NotThreadSafe
 public class UnSynchronizedAccount implements Account {
     private double balance;
 
@@ -14,11 +17,11 @@ public class UnSynchronizedAccount implements Account {
 
     @Override
     public void debit(double delta) {
-        balance += delta;
+        balance -= delta;
     }
 
     @Override
     public void credit(double delta) {
-        balance -= delta;
+        balance += delta;
     }
 }
