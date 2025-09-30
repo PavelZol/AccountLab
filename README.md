@@ -27,23 +27,23 @@ However, assume we need finer fractions (e.g., BTC subunits or fractional shares
 
 ### Use of `double`
 
-Not suitable. `double` introduces rounding errors.
+:no_entry_sign: Not suitable. `double` introduces rounding errors.
 
 ### Use of `DoubleAdder`
 
-Not suitable. Thread‑safe, but still uses `double` and inherits rounding errors.
+:no_entry_sign: Not suitable. Thread‑safe, but still uses `double` and inherits rounding errors.
 
 ### Use of `BigDecimal`
 
-The suitable option for precise math. `BigDecimal` avoids rounding errors, is immutable (allocates per update), and is
-not thread‑safe; coordinate access.
+:white_check_mark: The suitable option for precise math. `BigDecimal` avoids rounding errors, is immutable (allocates
+per update), and is not thread‑safe; coordinate access.
 
 #### `synchronized`
 
 - Algorithm: Blocking
 - API: :white_check_mark: Simplest; invariants are easy. Blocked threads are `blocked`, aiding deadlock diagnosis.
 - No fair mode.
-- Performance: Good contended/uncontended throughput; lowest allocation rate.
+- Performance: Good uncontended throughput; lowest allocation rate.
 - Example: [SynchronizedBigDecimalAccount.java](src/main/java/me/pavelzol/SynchronizedBigDecimalAccount.java)
 
 #### `ReentrantLock`
@@ -52,8 +52,7 @@ not thread‑safe; coordinate access.
 - API: :white_check_mark: Clear; invariants are easy. Threads are `waiting`, which complicates deadlock analysis.
 - Can be fair (but fair mode greatly hurts contended throughput).
 - Performance: Very good contended; uncontended similar to `synchronized`; average allocations.
--
-Example: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
+- Example: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
 
 #### `AtomicReference`
 
@@ -62,8 +61,7 @@ Example: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAcco
   jitter under contention.
 - No fair mode.
 - Performance: Best uncontended; backoff needed for good contended performance.
--
-Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenceAccount.java), [AtomicReferenceBackoffAccount.java](src/main/java/me/pavelzol/AtomicReferenceBackoffAccount.java)
+- Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenceAccount.java), [AtomicReferenceBackoffAccount.java](src/main/java/me/pavelzol/AtomicReferenceBackoffAccount.java)
 
 #### `VarHandle`
 
@@ -72,8 +70,7 @@ Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenc
   contention.
 - No fair mode.
 - Performance: Worst uncontended; backoff improves contended performance.
--
-Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.java), [VarHandleBackoffAccount.java](src/main/java/me/pavelzol/VarHandleBackoffAccount.java)
+- Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.java), [VarHandleBackoffAccount.java](src/main/java/me/pavelzol/VarHandleBackoffAccount.java)
 
 ## Benchmark Measurements
 
