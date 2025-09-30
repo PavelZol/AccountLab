@@ -6,7 +6,7 @@ import me.pavelzol.ReentrantFairLockAccount;
 import me.pavelzol.ReentrantLockAccount;
 import me.pavelzol.SynchronizedBigDecimalAccount;
 import me.pavelzol.VarHandleBackoffAccount;
-import me.pavelzol.VarHandleBigDecimalAccount;
+import me.pavelzol.VarHandleAccount;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -41,7 +41,7 @@ public class AccountBenchmarkTest {
         ReentrantFairLockAccount reentrantFairLockAccount;
         AtomicReferenceAccount atomicReferenceAccount;
         AtomicReferenceBackoffAccount atomicReferenceBackoffAccount;
-        VarHandleBigDecimalAccount varHandleBigDecimalAccount;
+        VarHandleAccount varHandleAccount;
         VarHandleBackoffAccount varHandleBackoffAccount;
 
         @Setup(Level.Iteration)
@@ -51,7 +51,7 @@ public class AccountBenchmarkTest {
             reentrantFairLockAccount = new ReentrantFairLockAccount(0.0);
             atomicReferenceAccount = new AtomicReferenceAccount(0.0);
             atomicReferenceBackoffAccount = new AtomicReferenceBackoffAccount(0.0);
-            varHandleBigDecimalAccount = new VarHandleBigDecimalAccount(0.0);
+            varHandleAccount = new VarHandleAccount(0.0);
             varHandleBackoffAccount = new VarHandleBackoffAccount(0.0);
         }
     }
@@ -83,7 +83,7 @@ public class AccountBenchmarkTest {
 
     @Benchmark
     public void varHandleCredit(SharedState s) {
-        s.varHandleBigDecimalAccount.credit(1.0);
+        s.varHandleAccount.credit(1.0);
     }
 
     @Benchmark

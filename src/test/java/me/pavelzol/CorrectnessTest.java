@@ -11,14 +11,14 @@ public class CorrectnessTest {
     private static Stream<Arguments> provideAccountImplementations() throws NoSuchFieldException, IllegalAccessException {
         return Stream.of(
             Arguments.of(new UnSynchronizedAccount(0.1)),
-            Arguments.of(new SynchronizedAccount(0.1)),
+            Arguments.of(new SynchronizedPrimitiveAccount(0.1)),
             Arguments.of(new SynchronizedBigDecimalAccount(0.1)),
             Arguments.of(new ReentrantLockAccount(0.1)),
             Arguments.of(new ReentrantFairLockAccount(0.1)),
             Arguments.of(new DoubleAdderAccount(0.1)),
             Arguments.of(new AtomicReferenceAccount(0.1)),
             Arguments.of(new AtomicReferenceBackoffAccount(0.1)),
-            Arguments.of(new VarHandleBigDecimalAccount(0.1))
+            Arguments.of(new VarHandleAccount(0.1))
         );
     }
 

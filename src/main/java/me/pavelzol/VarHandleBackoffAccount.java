@@ -1,10 +1,14 @@
 package me.pavelzol;
 
-import java.lang.invoke.*;
+import net.jcip.annotations.ThreadSafe;
+
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.LockSupport;
 
+@ThreadSafe
 public class VarHandleBackoffAccount implements Account {
     private BigDecimal balance;
     private final VarHandle balanceHandle;

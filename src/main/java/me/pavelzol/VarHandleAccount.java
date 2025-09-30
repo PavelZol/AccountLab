@@ -1,13 +1,18 @@
 package me.pavelzol;
 
-import java.lang.invoke.*;
+import net.jcip.annotations.ThreadSafe;
+
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.math.BigDecimal;
 
-public class VarHandleBigDecimalAccount implements Account {
+@ThreadSafe
+public class VarHandleAccount implements Account {
+    @SuppressWarnings("FieldMayBeFinal")
     private BigDecimal balance;
     private final VarHandle balanceHandle;
 
-    public VarHandleBigDecimalAccount(double initBalance) throws NoSuchFieldException, IllegalAccessException {
+    public VarHandleAccount(double initBalance) throws NoSuchFieldException, IllegalAccessException {
         this.balance = BigDecimal.valueOf(initBalance);
         balanceHandle = MethodHandles.lookup().findVarHandle(this.getClass(), "balance", BigDecimal.class);
     }

@@ -1,10 +1,15 @@
 package me.pavelzol;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.math.BigDecimal;
 import java.util.concurrent.locks.ReentrantLock;
 
+@ThreadSafe
 public class ReentrantFairLockAccount implements Account {
     private final ReentrantLock lock = new ReentrantLock(true);
+    @GuardedBy("lock")
     private volatile BigDecimal balance;
 
     public ReentrantFairLockAccount(double initBalance) {

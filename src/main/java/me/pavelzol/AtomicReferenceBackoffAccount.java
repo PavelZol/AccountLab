@@ -1,10 +1,13 @@
 package me.pavelzol;
 
+import net.jcip.annotations.ThreadSafe;
+
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
 
+@ThreadSafe
 public class AtomicReferenceBackoffAccount implements Account {
     private final AtomicReference<BigDecimal> balance;
 

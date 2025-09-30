@@ -1,8 +1,11 @@
 package me.pavelzol;
 
-import java.math.BigDecimal;
-import java.util.concurrent.atomic.*;
+import net.jcip.annotations.ThreadSafe;
 
+import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicReference;
+
+@ThreadSafe
 public class AtomicReferenceAccount implements Account {
     private final AtomicReference<BigDecimal> balance;
 

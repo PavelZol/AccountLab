@@ -1,10 +1,15 @@
 package me.pavelzol;
 
-public class SynchronizedAccount implements Account {
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
+@ThreadSafe
+public class SynchronizedPrimitiveAccount implements Account {
     private final Object lock = new Object();
+    @GuardedBy("lock")
     private volatile double balance;
 
-    public SynchronizedAccount(double initBalance) {
+    public SynchronizedPrimitiveAccount(double initBalance) {
         this.balance = initBalance;
     }
 
