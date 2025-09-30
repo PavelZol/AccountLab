@@ -50,6 +50,7 @@ communication.
   making it simple to investigate deadlocks.
 - No fair mode.
 - Performance: good throughput contended and uncontended, lowest memory allocation rate.
+- Examples: [SynchronizedBigDecimalAccount.java](src/main/java/me/pavelzol/SynchronizedBigDecimalAccount.java)
 
 ### `ReentrantLock`
 
@@ -58,6 +59,7 @@ communication.
   making it harder to investigate deadlocks.
 - Can have fair mode (although avg throughput under contention is extremely poor).
 - Performance: Very good contended throughput, uncontended similar to `synchronized`, average memory allocation rate.
+- Examples: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
 
 ### `AtomicReference`
 
@@ -66,6 +68,7 @@ communication.
   high contention requires backoff with random jitter.
 - No fair mode.
 - Performance: Best uncontended throughput, but requires backoff for good contended performance.
+- Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenceAccount.java), [AtomicReferenceBackoffAccount.java](src/main/java/me/pavelzol/AtomicReferenceBackoffAccount.java)
 
 ### `varHandle`
 
@@ -74,7 +77,7 @@ communication.
   acquiring. For high contention requires adding backoff and random jitter.
 - No fair mode.
 - Performance: Worst uncontended throughput, requires backoff for good contended performance.
-- Examples:
+- Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.java), [VarHandleBackoffAccount.java](src/main/java/me/pavelzol/VarHandleBackoffAccount.java)
 
 ## Benchmark Measurments
 
