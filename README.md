@@ -80,15 +80,15 @@ Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.jav
 
 ## Benchmark Measurements
 
-| Solution                  | Throughput Contended (ops/ms) | Allocation Contended (B/op) | Throughput Uncontended (ops/ms) | Allocation Uncontended (B/op) |
-|---------------------------|-------------------------------|-----------------------------|---------------------------------|-------------------------------|
-| synchronized              | 8 499 ±433                    | 40                          | 77 385 ±371                     | 40                            |
-| reentrantLock (not fair)  | 46 636 ±2720                  | 120                         | 75 787 ±649                     | 40                            |
-| reentrantLock (fair)      | 555 ±9                        | 152                         | 72 342 ±161                     | 40                            |
-| AtomicReference           | 17 401 ±90                    | 260                         | 85 573 ±205                     | 40                            |
-| AtomicReference (backoff) | 77 153 ±6513                  | 40                          | 84 983 ±86                      | 40                            |
-| VarHandle (default)       | 17 966 ±101                   | 269                         | 60 618 ±155                     | 40                            |
-| VarHandle (backoff)       | 55 713 ±2796                  | 40                          | 60 697 ±354                     | 40                            |
+| Solution                  | Throughput Contended (ops/ms) | Allocation Contended (B/op) | Throughput Single Thread (ops/ms) | Allocation Single Thread (B/op) |
+|---------------------------|-------------------------------|-----------------------------|-----------------------------------|---------------------------------|
+| synchronized              | 8 499 ±433                    | 40                          | 77 385 ±371                       | 40                              |
+| reentrantLock (not fair)  | 46 636 ±2720                  | 120                         | 75 787 ±649                       | 40                              |
+| reentrantLock (fair)      | 555 ±9                        | 152                         | 72 342 ±161                       | 40                              |
+| AtomicReference           | 17 401 ±90                    | 260                         | 85 573 ±205                       | 40                              |
+| AtomicReference (backoff) | 77 153 ±6513                  | 40                          | 84 983 ±86                        | 40                              |
+| VarHandle (default)       | 17 966 ±101                   | 269                         | 60 618 ±155                       | 40                              |
+| VarHandle (backoff)       | 55 713 ±2796                  | 40                          | 60 697 ±354                       | 40                              |
 
 ## Code NFR (assumed)
 
