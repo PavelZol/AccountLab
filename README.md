@@ -1,85 +1,81 @@
-# Analyzis of different implementations of contented Account class
+# Analysis of different implementations of contended Account class
 
 ## Given
 
-To create an Acccount class, which holds current balance of the account, and provides api to perform given operations:
+Create an Account class that holds the current balance and provides this API:
 
 - `void credit(double amount)`
 - `void debit(double amount)`
-- `double currentBalance()`
+- `double getBalance()`
 
-Class is going to be used in multithread environment.
+The class is used in a multithreaded environment.
 
 ## Task
 
-Define which implementation is better suited.
+Select the most suitable implementation.
 
 ## Approaches
 
 ### Use of Integer instead of double
 
-If double is intended to store only "cents" of a currency, up to 2 signs after the dot, then it is advised to use
-integer data type and do all operations - store and calculation with "cents".
+If values are limited to cents (two decimals), use an integer type and store amounts in cents; do all math with
+integers.
 
-Such approach will allow to either use `int` type in blocking algorithm, or use AtomicInteger in non-blocking
-algorithms.
+This enables `int`/`long` with locks, or `AtomicInteger`/`AtomicLong` for non‑blocking algorithms.
 
-However, let's assume that we are required to build most flexible solution, which should handle fractions well (for
-example fractions of Bitcoin, fractions of stock ownership).
+However, assume we need finer fractions (e.g., BTC subunits or fractional shares).
 
-## Use of `double`
+### Use of `double`
 
-Not suitable. `double` can create rounding errors.
-Example:
+Not suitable. `double` introduces rounding errors.
 
-## Use of `DoubleAdder`
+### Use of `DoubleAdder`
 
-Not suitable. `DoubleAdder` is thread safe, but still has rounding errors.
-Example:
+Not suitable. Thread‑safe, but still uses `double` and inherits rounding errors.
 
-## Use of `BigDecimal`
+### Use of `BigDecimal`
 
-The only suitable option. BigDecimal has precise calculations without rounding errors. BigDecimal is immutable class,
-thus each operation creates a new instance, causing heavy allocation. Not threadsafe, thus requires additional thread
-communication.
+The suitable option for precise math. `BigDecimal` avoids rounding errors, is immutable (allocates per update), and is
+not thread‑safe; coordinate access.
 
-### `synchronized`
+#### `synchronized`
 
 - Algorithm: Blocking
-- API: :white_check_mark: The simplest. Easy to maintain invariants. Blocked threads will be in `blocked` state thus
-  making it simple to investigate deadlocks.
+- API: :white_check_mark: Simplest; invariants are easy. Blocked threads are `blocked`, aiding deadlock diagnosis.
 - No fair mode.
-- Performance: good throughput contended and uncontended, lowest memory allocation rate.
-- Examples: [SynchronizedBigDecimalAccount.java](src/main/java/me/pavelzol/SynchronizedBigDecimalAccount.java)
+- Performance: Good contended/uncontended throughput; lowest allocation rate.
+- Example: [SynchronizedBigDecimalAccount.java](src/main/java/me/pavelzol/SynchronizedBigDecimalAccount.java)
 
-### `ReentrantLock`
+#### `ReentrantLock`
 
-- Algorithm:  Blocking
-- API: :white_check_mark: Good enough. Easy to maintain invariants. Blocked threads will be in `waiting` state thus
-  making it harder to investigate deadlocks.
-- Can have fair mode (although avg throughput under contention is extremely poor).
-- Performance: Very good contended throughput, uncontended similar to `synchronized`, average memory allocation rate.
-- Examples: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
+- Algorithm: Blocking
+- API: :white_check_mark: Clear; invariants are easy. Threads are `waiting`, which complicates deadlock analysis.
+- Can be fair (but fair mode greatly hurts contended throughput).
+- Performance: Very good contended; uncontended similar to `synchronized`; average allocations.
+-
+Example: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
 
-### `AtomicReference`
+#### `AtomicReference`
 
-- Algorithm:  Non-Blocking CAS
-- API: :white_check_mark: Simple enough, but can be tricky. Difficult to maintain invariants. Can have ABA problem. For
-  high contention requires backoff with random jitter.
+- Algorithm: Non‑blocking CAS
+- API: :ballot_box_with_check: Simple but careful; invariants are harder. Prone to ABA; requires use of backoff with
+  jitter under contention.
 - No fair mode.
-- Performance: Best uncontended throughput, but requires backoff for good contended performance.
-- Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenceAccount.java), [AtomicReferenceBackoffAccount.java](src/main/java/me/pavelzol/AtomicReferenceBackoffAccount.java)
+- Performance: Best uncontended; backoff needed for good contended performance.
+-
+Examples: [AtomicReferenceAccount.java](src/main/java/me/pavelzol/AtomicReferenceAccount.java), [AtomicReferenceBackoffAccount.java](src/main/java/me/pavelzol/AtomicReferenceBackoffAccount.java)
 
-### `varHandle`
+#### `VarHandle`
 
-- Algorithm:  Non-Blocking CAS
-- API: :bangbang: Requires careful handling. Can have ABA problem. Can be misused easily with, for example, incorrect
-  acquiring. For high contention requires adding backoff and random jitter.
+- Algorithm: Non‑blocking CAS
+- API: :bangbang: Easy to misuse (e.g., wrong acquire). Prone to ABA; requires use of backoff with jitter under
+  contention.
 - No fair mode.
-- Performance: Worst uncontended throughput, requires backoff for good contended performance.
-- Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.java), [VarHandleBackoffAccount.java](src/main/java/me/pavelzol/VarHandleBackoffAccount.java)
+- Performance: Worst uncontended; backoff improves contended performance.
+-
+Examples: [VarHandleAccount.java](src/main/java/me/pavelzol/VarHandleAccount.java), [VarHandleBackoffAccount.java](src/main/java/me/pavelzol/VarHandleBackoffAccount.java)
 
-## Benchmark Measurments
+## Benchmark Measurements
 
 | Solution                  | Throughput Contended (ops/ms) | Allocation Contended (B/op) | Throughput Uncontended (ops/ms) | Allocation Uncontended (B/op) |
 |---------------------------|-------------------------------|-----------------------------|---------------------------------|-------------------------------|
@@ -97,7 +93,6 @@ communication.
 - High chance of frequent code changes (thus simple API is preferred)
 - High chance of invariants (locks are preferred)
 
-# Results
+## Results
 
-Given listed above NFRs, solution with `synchronized` block is going to be preferable. If there is a need for fairness -
-ReentrantLocks also a good choice. 
+Given the NFRs, prefer `synchronized`. If constant high contention is expected, use a fair `ReentrantLock`.
