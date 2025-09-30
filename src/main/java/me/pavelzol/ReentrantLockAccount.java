@@ -1,0 +1,40 @@
+package me.pavelzol;
+
+import java.math.BigDecimal;
+import java.util.concurrent.locks.*;
+
+public class ReentrantLockAccount implements Account {
+    private final Lock lock = new ReentrantLock(false);
+    private BigDecimal balance;
+
+    public ReentrantLockAccount(double initBalance) {
+        this.balance = BigDecimal.valueOf(initBalance);
+    }
+
+    @Override
+    public double getBalance() {
+        return balance.doubleValue();
+    }
+
+    @Override
+    public void debit(double delta) {
+        lock.lock();
+        try {
+            balance = balance.add(BigDecimal.valueOf(delta));
+        } finally {
+            lock.unlock();
+        }
+
+
+    }
+
+    @Override
+    public void credit(double delta) {
+        lock.lock();
+        try {
+            balance = balance.subtract(BigDecimal.valueOf(delta));
+        } finally {
+            lock.unlock();
+        }
+    }
+}

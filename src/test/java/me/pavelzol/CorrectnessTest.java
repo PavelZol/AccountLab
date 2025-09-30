@@ -8,8 +8,6 @@ import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 public class CorrectnessTest {
-    public static final int CPU_MULTIPLIER = 4;
-
     private static Stream<Arguments> provideAccountImplementations() throws NoSuchFieldException, IllegalAccessException {
         return Stream.of(
             Arguments.of(new UnSynchronizedAccount(0.1)),
@@ -26,7 +24,7 @@ public class CorrectnessTest {
     void testAccountImplementation(Account account) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         try (var executor = Executors.newFixedThreadPool(
-            Runtime.getRuntime().availableProcessors() * CPU_MULTIPLIER)) {
+            Runtime.getRuntime().availableProcessors())) {
             for (int i = 0; i < 100_000; i++) {
                 executor.submit(() -> {
                     try {
