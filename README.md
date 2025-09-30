@@ -84,12 +84,21 @@ per update), and is not thread‑safe; coordinate access.
 | VarHandle (default)       | 17 966 ±101                   | 269                         | 60 618 ±155                       | 40                              |
 | VarHandle (backoff)       | 55 713 ±2796                  | 40                          | 60 697 ±354                       | 40                              |
 
+## Tests
+
+- Correctness: Verifies each implementation reaches the expected final balance under concurrent credit/debit operations. Source: [CorrectnessTest.java](src/test/java/me/pavelzol/CorrectnessTest.java)
+- Benchmark: JMH throughput benchmarks for credit operations across implementations (with GC profiling). Source: [AccountBenchmarkTest.java](src/test/java/me/pavelzol/bench/AccountBenchmarkTest.java)
+
+### Run Benchmarks
+
+- In your IDE, run the `main` method of `AccountBenchmarkTest`.
+
 ## Code NFR (assumed)
 
 - Low contention.
 - High chance of frequent code changes (thus simple API is preferred)
 - High chance of invariants (locks are preferred)
 
-## Results
+## Conclusion
 
-Given the NFRs, prefer `synchronized`. If constant high contention is expected, use a fair `ReentrantLock`.
+Given the NFRs, prefer `synchronized`. If constant high contention is expected, use a `ReentrantLock`.

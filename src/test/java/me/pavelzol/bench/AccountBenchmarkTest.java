@@ -1,5 +1,11 @@
 package me.pavelzol.bench;
 
+/**
+ * JMH throughput benchmark for Account implementations.
+ * Measures credit operation performance under different synchronization strategies.
+ * Includes a simple main method for running from IDE or CLI.
+ */
+
 import me.pavelzol.AtomicReferenceAccount;
 import me.pavelzol.AtomicReferenceBackoffAccount;
 import me.pavelzol.ReentrantFairLockAccount;
@@ -91,7 +97,7 @@ public class AccountBenchmarkTest {
         s.varHandleBackoffAccount.credit(1.0);
     }
 
-    static void main() throws Exception {
+    public static void main(String[] args) throws Exception {
         run(".*" + AccountBenchmarkTest.class.getSimpleName() + ".*");
     }
 

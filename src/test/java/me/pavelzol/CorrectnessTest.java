@@ -1,5 +1,12 @@
 package me.pavelzol;
 
+/**
+ * JUnit correctness suite for all Account implementations.
+ * Exercises concurrent credit/debit operations and checks the final balance.
+ * Note: this test is expected to FAIL for implementations with rounding or
+ * concurrency issues (by design) to highlight incorrect algorithms.
+ */
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
