@@ -10,6 +10,12 @@ Create an Account class that holds the current balance and provides this API:
 
 The class is used in a multithreaded environment.
 
+## Code NFR (assumed)
+
+- Low contention (no need to focus on contended performance)
+- High chance of frequent code changes (thus simple API is preferred)
+- High chance of invariants (locks are preferred)
+
 ## Task
 
 Select the most suitable implementation.
@@ -92,12 +98,6 @@ per update), and is not thread‑safe; coordinate access.
 ### Run Benchmarks
 
 - In your IDE, run the `main` method of `AccountBenchmarkTest`.
-
-## Code NFR (assumed)
-
-- Low contention.
-- High chance of frequent code changes (thus simple API is preferred)
-- High chance of invariants (locks are preferred)
 
 ## Conclusion
 

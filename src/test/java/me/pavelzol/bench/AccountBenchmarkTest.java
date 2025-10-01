@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 3)
 @Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
-@Threads(1)
+@Threads(Threads.MAX)
 public class AccountBenchmarkTest {
 
     @State(Scope.Benchmark)
