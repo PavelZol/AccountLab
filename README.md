@@ -14,7 +14,7 @@ The class is used in a multithreaded environment.
 
 - Low contention (no need to focus on contended performance)
 - High chance of frequent code changes (thus simple API is preferred)
-- High chance of invariants (locks are preferred)
+- High chance of invariants (locks are going to be needed anyway)
 
 ## Task
 
