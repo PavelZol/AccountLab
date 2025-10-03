@@ -55,7 +55,7 @@ per update), and is not thread‑safe; coordinate access.
 #### `ReentrantLock`
 
 - Algorithm: Blocking
-- API: :white_check_mark: Clear; invariants are easy. Threads are `waiting`, which complicates deadlock analysis.
+- API: :white_check_mark: Clear; invariants are easy. Blocked threads are `waiting`, which complicates deadlock analysis.
 - Can be fair (but fair mode greatly hurts contended throughput).
 - Performance: Very good contended; uncontended similar to `synchronized`; average allocations.
 - Example: [ReentrantLockAccount.java](src/main/java/me/pavelzol/ReentrantLockAccount.java), [ReentrantFairLockAccount.java](src/main/java/me/pavelzol/ReentrantFairLockAccount.java)
